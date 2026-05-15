@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# prompt — 体系化提示词生成触发器
+# 用法: ./prompt <需求描述> [--depth=basic|standard|advanced]
+#
+# 示例:
+#   ./prompt "Mamba模型"
+#   ./prompt "React Hooks教程" --depth=advanced
+#   ./prompt "代码审查"
+#
+
+NEED="${1:-}"
+DEPTH="standard"
+
+# 解析参数
+for arg in "$@"; do
+  case $arg in
+    --depth=*) DEPTH="${arg#*=}" ;;
+  esac
+done
+
+if [ -z "$NEED" ]; then
+  echo "❌ 缺少需求描述"
+  echo ""
+  echo "用法: ./prompt <需求描述> [--depth=basic|standard|advanced]"
+  echo ""
+  echo "参数:"
+  echo "  需求描述  — 必需，口语化的学习/技术需求"
+  echo "  --depth   — 可选，basic / standard(默认) / advanced"
+  echo ""
+  echo "示例:"
+  echo "  ./prompt 'Mamba模型'"
+  echo "  ./prompt 'React Hooks教程' --depth=advanced"
+  echo "  ./prompt '代码审查'"
+  echo ""
+  echo "🎯 本工具触发 AI Agent 的多轮画像引擎，将碎片化需求转化为"
+  echo "   可直接交付的体系化提示词（Master Prompt）。"
+  echo ""
+  echo "📋 流程: 意图识别 → 需求画像（多轮追问） → 体系化生成 → 交付"
+  exit 1
+fi
+
+echo ""
+echo "╔════════════════════════════════════════════════════════════════╗"
+echo "║           ✨ 体系化提示词生成 — Systematic Prompt              ║"
+echo "╠════════════════════════════════════════════════════════════════╣"
+printf  "║  需求:   %-45s        ║\n" "$NEED"
+printf  "║  深度:   %-45s        ║\n" "$DEPTH"
+echo "╚════════════════════════════════════════════════════════════════╝"
+echo ""
+echo "📋 多轮画像引擎流程:"
+echo "   1. 意图识别       — 确认是否为'生成提示词'请求"
+echo "   2. 需求画像       — 多轮追问消除信息缺口"
+echo "   3. 体系化生成     — 输出结构严谨的 Master Prompt"
+echo "   4. 交付确认       — 用户审阅 + 迭代优化"
+echo ""
+echo "📝 你可以在对话中发送:"
+echo "   '/prompt $NEED'"
+echo "   或 '帮我写一份${NEED}的提示词'"
+echo ""
